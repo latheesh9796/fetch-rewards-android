@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FetchRewards-Kapin</string>
+    <string name="list_id">List ID</string>
+    <string name="name">Name</string>
+    <string name="id">ID</string>
+    <string name="company_name">fetchRewards</string>
+</resources>
