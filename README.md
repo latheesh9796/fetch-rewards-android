@@ -36,6 +36,8 @@
     - Link - https://developer.android.com/jetpack/androidx/releases/recyclerview
 - Retrofit
     - Link - https://square.github.io/retrofit/
+- Lottie
+    - Link - https://github.com/airbnb/lottie-android
 
 ### Network and API
 -------------
