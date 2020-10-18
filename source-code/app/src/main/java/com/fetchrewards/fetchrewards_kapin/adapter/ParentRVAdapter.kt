@@ -16,6 +16,7 @@ import com.fetchrewards.fetchrewards_kapin.models.Item
 class ParentRVAdapter(private val context: MainActivity) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private val tag = "@ParentRVAdapter"
     private lateinit var listIdValues: List<Int>
 
     class ParentViewHolder(ParentView: View) : RecyclerView.ViewHolder(ParentView) {
@@ -39,6 +40,7 @@ class ParentRVAdapter(private val context: MainActivity) :
         // Show/Hide Expanded View
         toggleExpandedView(holder)
         holder.listIDTV.setOnClickListener {
+            Log.e(tag, "$listIdString is toggled!")
             holder.isExpanded = !holder.isExpanded
             toggleExpandedView(holder)
         }
@@ -56,7 +58,6 @@ class ParentRVAdapter(private val context: MainActivity) :
     }
 
     private fun toggleExpandedView(holder: ParentViewHolder) {
-        Log.e("@toggle", holder.isExpanded.toString())
         when (holder.isExpanded) {
             true -> {
                 holder.expandedView.visibility = View.VISIBLE

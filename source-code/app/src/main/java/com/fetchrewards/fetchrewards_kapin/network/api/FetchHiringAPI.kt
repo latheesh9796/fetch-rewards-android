@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface FetchHiringAPI {
+    // Base URL has been declared in Retrofit Service
     @GET("hiring.json")
     fun fetchData(): Call<List<Item>>
 }

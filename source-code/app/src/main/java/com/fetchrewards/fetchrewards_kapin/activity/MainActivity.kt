@@ -30,14 +30,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Log.e(tag, "Activity Created: MainActivity")
         parentRecyclerView = findViewById(R.id.parentRecyclerView)
-        // Start loading animation
         CoroutineScope(IO).launch {
-            // Set RecyclerView Layout
-            initRecyclerView()
+            // Fetching Data and Set RecyclerView Layout
+            fetchDataAndInitRecyclerView()
         }
     }
 
-    private fun initRecyclerView() {
+    private fun fetchDataAndInitRecyclerView() {
         // Initializing the view model
         val dataViewModel: DataViewModel =
             ViewModelProviders.of(this).get(DataViewModel::class.java)
@@ -52,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 if (rawItemList != null) {
                     // Filtering and sorting the list as per requirements
                     filterAndSortItems(rawItemList)
-                    //
+                    // Setting recycler view layout
                     val adapter = ParentRVAdapter(this@MainActivity)
                     parentRecyclerView.layoutManager =
                         LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
@@ -90,5 +89,6 @@ class MainActivity : AppCompatActivity() {
             ) as MutableList<Item>
             sortedHashMap[key] = sortedItemList
         }
+        Log.e(tag, "SortedHashMap is ready as per requirements")
     }
 }

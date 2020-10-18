@@ -27,13 +27,15 @@
 -------------
 
 Libraries
-- 1. Kotlin Coroutines
+- Kotlin Coroutines
     - Link - https://github.com/Kotlin/kotlinx.coroutines
-- 2. GSON: Json Parser
+- Lifecycle (for MVVM)
+    - Link - https://developer.android.com/jetpack/androidx/releases/lifecycle
+- GSON: Json Parser
     - Link - https://github.com/google/gson
-- 3. Recycler View
+- Recycler View
     - Link - https://developer.android.com/jetpack/androidx/releases/recyclerview
-- 5. Retrofit
+- Retrofit
     - Link - https://square.github.io/retrofit/
 
 ### Network and API
