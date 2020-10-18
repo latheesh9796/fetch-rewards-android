@@ -26,7 +26,6 @@
 ### Libraries Used
 -------------
 
-Libraries
 - Kotlin Coroutines
     - Link - https://github.com/Kotlin/kotlinx.coroutines
 - Lifecycle (for MVVM)
