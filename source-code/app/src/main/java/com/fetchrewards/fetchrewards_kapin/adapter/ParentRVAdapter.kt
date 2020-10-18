@@ -1,14 +1,15 @@
 package com.fetchrewards.fetchrewards_kapin.adapter
 
-import android.util.Log
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.fetchrewards.fetchrewards_kapin.R
 import com.fetchrewards.fetchrewards_kapin.activity.MainActivity
 import com.fetchrewards.fetchrewards_kapin.models.Item
@@ -16,13 +17,13 @@ import com.fetchrewards.fetchrewards_kapin.models.Item
 class ParentRVAdapter(private val context: MainActivity) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val tag = "@ParentRVAdapter"
     private lateinit var listIdValues: List<Int>
 
     class ParentViewHolder(ParentView: View) : RecyclerView.ViewHolder(ParentView) {
         val listIDTV: TextView = ParentView.findViewById(R.id.listID)
         val expandedView: LinearLayout = ParentView.findViewById(R.id.expandedView)
         val childRecyclerView: RecyclerView = ParentView.findViewById(R.id.childRecyclerView)
+        val dropDownArrow: LottieAnimationView = ParentView.findViewById(R.id.dropDownArrow)
         var isExpanded: Boolean = false
     }
 
@@ -38,10 +39,9 @@ class ParentRVAdapter(private val context: MainActivity) :
         val listIdString = "List ID : ${listIdValues[position]}"
         (holder as ParentViewHolder).listIDTV.text = listIdString
         // Show/Hide Expanded View
-        toggleExpandedView(holder)
         holder.listIDTV.setOnClickListener {
-            Log.e(tag, "$listIdString is toggled!")
             holder.isExpanded = !holder.isExpanded
+            TransitionManager.beginDelayedTransition(holder.expandedView, AutoTransition())
             toggleExpandedView(holder)
         }
         // Child RecyclerView Items
@@ -60,22 +60,16 @@ class ParentRVAdapter(private val context: MainActivity) :
     private fun toggleExpandedView(holder: ParentViewHolder) {
         when (holder.isExpanded) {
             true -> {
+                // Animate arrow -> expand list
+                holder.dropDownArrow.speed = 3F
+                holder.dropDownArrow.playAnimation()
                 holder.expandedView.visibility = View.VISIBLE
-                holder.listIDTV.setCompoundDrawablesWithIntrinsicBounds(
-                    null,
-                    null,
-                    ContextCompat.getDrawable(context, R.drawable.ic_arrow_up),
-                    null
-                )
             }
-            else -> {
+            false -> {
+                // Animate arrow -> collapse list
+                holder.dropDownArrow.speed = -2F
+                holder.dropDownArrow.playAnimation()
                 holder.expandedView.visibility = View.GONE
-                holder.listIDTV.setCompoundDrawablesWithIntrinsicBounds(
-                    null,
-                    null,
-                    ContextCompat.getDrawable(context, R.drawable.ic_arrow_down),
-                    null
-                )
             }
         }
     }

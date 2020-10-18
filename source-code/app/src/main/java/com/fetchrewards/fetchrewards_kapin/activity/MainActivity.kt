@@ -2,10 +2,14 @@ package com.fetchrewards.fetchrewards_kapin.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.fetchrewards.fetchrewards_kapin.R
 import com.fetchrewards.fetchrewards_kapin.adapter.ParentRVAdapter
 import com.fetchrewards.fetchrewards_kapin.models.Item
@@ -24,12 +28,21 @@ class MainActivity : AppCompatActivity() {
 
     // Initialize view components
     private lateinit var parentRecyclerView: RecyclerView
+    private lateinit var loader: LottieAnimationView
+    private lateinit var errorTV: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.e(tag, "Activity Created: MainActivity")
+
         parentRecyclerView = findViewById(R.id.parentRecyclerView)
+        loader = findViewById(R.id.loader)
+        errorTV = findViewById(R.id.errorMessage)
+
+        // Initially show loader
+        parentRecyclerView.visibility = View.GONE
+        loader.visibility = View.VISIBLE
         CoroutineScope(IO).launch {
             // Fetching Data and Set RecyclerView Layout
             fetchDataAndInitRecyclerView()
@@ -48,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             dataViewModel.getData().observe(this@MainActivity, {
                 val rawItemList: List<Item>? = dataViewModel.getData().value
                 Log.e(tag, "List of items have been fetched")
-                if (rawItemList != null) {
+                if (!rawItemList.isNullOrEmpty()) {
                     // Filtering and sorting the list as per requirements
                     filterAndSortItems(rawItemList)
                     // Setting recycler view layout
@@ -56,8 +69,19 @@ class MainActivity : AppCompatActivity() {
                     parentRecyclerView.layoutManager =
                         LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
                     parentRecyclerView.adapter = adapter
+                    // If successful, hide loader and show recycler view
+                    // Delay for making animation look smooth
+                    Handler().postDelayed({
+                        loader.pauseAnimation()
+                        loader.visibility = View.GONE
+                        parentRecyclerView.visibility = View.VISIBLE
+                    }, 1000)
                 } else {
                     Log.e(tag, "No results have been fetched")
+                    // In case there is no data to be displayed
+                    Handler().postDelayed({
+                        errorTV.visibility = View.VISIBLE
+                    }, 3000)
                 }
 
             })
